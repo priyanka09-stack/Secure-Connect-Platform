@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const User = require('./models/User');
 const appEvents = require('./events');
 
-// handshake se token nikalta hai (auth object ya cookie)
+
 function getSocketToken(socket) {
   if (socket.handshake.auth && socket.handshake.auth.token) {
     return socket.handshake.auth.token;
@@ -18,7 +18,7 @@ function getSocketToken(socket) {
 }
 
 module.exports = (io) => {
-  // connection se pehle JWT verify
+  // JWT verifiation
   io.use(async (socket, next) => {
     const token = getSocketToken(socket);
     if (!token) {

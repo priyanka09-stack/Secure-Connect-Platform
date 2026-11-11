@@ -4,13 +4,13 @@ const { verifyToken, isAdmin } = require('../middleware/auth');
 
 const router = express.Router();
 
-// koi bhi logged-in user
+// Any logged in user
 router.get('/me', verifyToken, async (req, res) => {
   const user = await User.findById(req.user.id).select('-password');
   res.status(200).json(user);
 });
 
-// sirf admin
+// only admin
 router.get('/admin/users', verifyToken, isAdmin, async (req, res) => {
   const users = await User.find().select('-password');
   res.status(200).json(users);

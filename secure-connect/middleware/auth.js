@@ -1,13 +1,13 @@
 const jwt = require('jsonwebtoken');
 
-// token ko header ya cookie se nikalta hai
+// extracts token from authorization header or cookie
 function getToken(req) {
   const authHeader = req.headers.authorization;
   if (authHeader && authHeader.startsWith('Bearer ')) {
     return authHeader.split(' ')[1];
   }
 
-  // cookie-parser allowed nahi hai, isliye manually padh rahe hain
+  // manually check cookies if not in header
   const cookieHeader = req.headers.cookie || '';
   const tokenCookie = cookieHeader
     .split(';')
@@ -17,7 +17,7 @@ function getToken(req) {
   return tokenCookie ? tokenCookie.split('=')[1] : null;
 }
 
-// Protected route ke liye: valid JWT chahiye
+// Protected route - verifies JWT
 function verifyToken(req, res, next) {
   const token = getToken(req);
 
@@ -34,7 +34,7 @@ function verifyToken(req, res, next) {
   }
 }
 
-// RBAC: sirf admin ko allow karta hai
+// RBAC: only admin users
 function isAdmin(req, res, next) {
   if (req.user.role !== 'admin') {
     return res.status(403).json({ message: 'Admin access only' });

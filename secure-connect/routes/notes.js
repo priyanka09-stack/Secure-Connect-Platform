@@ -5,7 +5,7 @@ const { verifyToken } = require('../middleware/auth');
 
 const router = express.Router();
 
-// saare routes protected hain
+// All routes are protected
 router.use(verifyToken);
 
 // CREATE: POST /api/notes
@@ -25,7 +25,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-// READ ALL: GET /api/notes (sirf apne notes)
+// READ ALL: GET /api/notes
 router.get('/', async (req, res) => {
   try {
     const notes = await Note.find({ owner: req.user.id });
